@@ -65,15 +65,20 @@ class ProductManager{
 }
 
 let productManager = new ProductManager()
-
-productManager.addProdcut("Batman R.I.P.", "chao", 1000)
-productManager.addProdcut("Batman the killing joke", "chao1", 2000, "x", 157, 300)
-productManager.addProdcut("Batman Hush", "chao2", 3000, "x", 157, 300)
-productManager.addProdcut("Batman and son", "chao3", 2500, "x", 157, 300)
-productManager.addProdcut("The Batman Who Laughs", "chao4", 2500, "x", 158, 300)
+// prueba de producto sin todos los campos llenados
+productManager.addProdcut("Batman R.I.P.", "El origen (histórico y real) del verdadero nombre de Batman", 1000)
+// prueba de creacion de producto correctamente
+productManager.addProdcut("Batman the killing joke", "un recorrido en la oscura psique del principe payaso del crimen", 2000, "x", 157, 300)
+// prueba de repeticion de code
+productManager.addProdcut("Batman Hush", "¿Batman podra contra Silencio?", 3000, "x", 157, 300)
+productManager.addProdcut("Batman and son", "El hijo de batman!", 2500, "x", 157, 300)
+// creacion de producto para pruebas de getById
+productManager.addProdcut("The Batman Who Laughs", "Un batman que rie? tenebroso!", 2500, "x", 158, 300)
+// prueba de metodo getById
 productManager.getProductBtId(2)
 productManager.getProductBtId(4)
 productManager.getProductBtId(5)
 productManager.getProductBtId(7)
 productManager.getProductBtId(3)
+// prueba de metodo getProducts
 productManager.getProducts()
