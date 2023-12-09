@@ -15,40 +15,19 @@ class ProductManager{
     async addProdcut(title, description, price, thumbnail, code, stock) {
         try { 
 
-        if ((title == undefined) || (description == undefined) || (price == undefined) || (thumbnail == undefined) || (code == undefined) || (stock == undefined)) console.log("llenar todos los campos")
+        if (!title || !description || !price || !thumbnail || !code || !stock) console.log("llenar todos los campos")
         
         else{
-            if (this.products.length == 0) {
-                this.id = ++this.#id
-                this.products.push({
-                id: this.id,
-                title: title,
-                description: description,
-                price: price,
-                thumbnail: thumbnail,
-                code: code,
-                stock: stock})
-            }
-
+            if(this.products.some(product => product.code == code)) console.log("El codigo de producto ya existe")
             else{
-                this.products.forEach(value => {
-                const array = Object.values(value)
-                if (array.includes(code)) console.log("producto no creado por repeticion de code")
-                else{
-                    if (this.#romper == 0){
-                    ++this.#romper
-                    this.id = ++this.#id
-                    this.products.push({
-                    id: this.id,
+                this.products.push({
+                    id: ++this.#id,
                     title: title,
                     description: description,
                     price: price,
                     thumbnail: thumbnail,
                     code: code,
                     stock: stock})
-                }}
-                })
-                this.#romper = 0
             }
         }
             
@@ -170,5 +149,5 @@ let productManager = new ProductManager('./products.json')
 // productManager.getProductBtId(7)
 // productManager.getProductBtId(3)
 // productManager.getProducts()
-// productManager.updateProduct(3, "title", "The Batman Who Laughs")
+// productManager.updateProduct(3, "title", "Hola")
 // productManager.deleteProduct(1)
