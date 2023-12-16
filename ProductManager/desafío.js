@@ -10,7 +10,6 @@ class ProductManager{
         this.path = path
     }
 
-    
 
     async addProdcut(title, description, price, thumbnail, code, stock) {
         try { 
@@ -46,7 +45,7 @@ class ProductManager{
         try {
             const file = await fs.readFile(this.path, 'utf-8')
             const fileJS = JSON.parse(file, null, 2)
-            console.log(fileJS)
+            return fileJS
         } catch (error) {
             console.log(error)
         }
@@ -56,17 +55,21 @@ class ProductManager{
 
     async getProductBtId(id){
         try {
-            const arreglo = await fs.readFile(this.path, 'utf-8')
-            const arregloJS = JSON.parse(arreglo)
+            const arregloJS = await this.getProducts()
             let variable = 0
+            let objeto = {}
             arregloJS.map(value2 => {
             const producto = Object.values(value2)
             if(producto[0] == id){
-                console.log(value2)
+                // console.log(value2)
                 variable = 1
+                objeto = value2
             }
         })
-        if (variable == 0) console.log("Not found")
+        
+        if(variable == 0) return "not found"
+        else return objeto
+        
 
         } catch (error) {
             console.log(error)
@@ -76,8 +79,7 @@ class ProductManager{
 
     async updateProduct(id, campoActualizar, nuevoValorCampo){
         try {
-            const arreglo = await fs.readFile(this.path, 'utf-8')
-            const arregloJS = JSON.parse(arreglo)
+            const arregloJS = await this.getProducts()
             let variable = 0
             arregloJS.map(value2 => {
             const producto = Object.values(value2)
@@ -124,8 +126,7 @@ class ProductManager{
 
     async deleteProduct(id){
         try {
-            const arreglo = await fs.readFile(this.path, 'utf-8')
-            const arregloJS = JSON.parse(arreglo)
+            const arregloJS = await this.getProducts()
             arregloJS.splice((id-1), 1)
             const arregloJSON = JSON.stringify(arregloJS, null, 2)
             await fs.writeFile(this.path, arregloJSON, 'utf-8')
@@ -136,7 +137,7 @@ class ProductManager{
   
 }
 
-let productManager = new ProductManager('./products.json')
+// let productManager = new ProductManager('./products.json')
 
 // productManager.addProdcut("Batman R.I.P.", "chao", 1000)
 // productManager.addProdcut("Batman the killing joke", "chao1", 2000, "x", 157, 300)
@@ -151,3 +152,5 @@ let productManager = new ProductManager('./products.json')
 // productManager.getProducts()
 // productManager.updateProduct(3, "title", "Hola")
 // productManager.deleteProduct(1)
+
+module.exports = ProductManager

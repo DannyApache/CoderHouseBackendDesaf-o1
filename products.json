@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "title": "Batman the killing joke",
+    "description": "chao1",
+    "price": 2000,
+    "thumbnail": "x",
+    "code": 157,
+    "stock": 300
+  },
+  {
+    "id": 2,
+    "title": "Batman and son",
+    "description": "chao3",
+    "price": 2500,
+    "thumbnail": "x",
+    "code": 159,
+    "stock": 300
+  },
+  {
+    "id": 3,
+    "title": "The Batman Who Laughs",
+    "description": "chao4",
+    "price": 2500,
+    "thumbnail": "x",
+    "code": 158,
+    "stock": 300
+  }
+]
