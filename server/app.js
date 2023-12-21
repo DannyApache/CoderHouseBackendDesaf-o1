@@ -2,9 +2,6 @@ const ProductManager = require('./../ProductManager/desafío.js')
 const express = require('express')
 
 let productManager = new ProductManager('./../products.json')
-// productManager.addProdcut("Batman the killing joke", "chao1", 2000, "x", 157, 300)
-// productManager.addProdcut("Batman and son", "chao3", 2500, "x", 159, 300)
-// productManager.addProdcut("The Batman Who Laughs", "chao4", 2500, "x", 158, 300)
 
 const app = express()
 

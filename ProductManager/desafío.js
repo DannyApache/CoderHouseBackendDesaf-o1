@@ -3,30 +3,28 @@ const { title } = require('process')
 
 class ProductManager{
 
-    #id = 0
-    #romper = 0
     constructor(path){
         this.products = []
         this.path = path
     }
 
 
-    async addProdcut(title, description, price, thumbnail, code, stock) {
+    async addProdcut(producto) {
         try { 
 
-        if (!title || !description || !price || !thumbnail || !code || !stock) console.log("llenar todos los campos")
+        if (!producto.title || !producto.description || !producto.price || !producto.thumbnail || !producto.code || !producto.stock) console.log("llenar todos los campos")
         
         else{
-            if(this.products.some(product => product.code == code)) console.log("El codigo de producto ya existe")
+            if(this.products.some(product => product.code == producto.code)) console.log("El codigo de producto ya existe")
             else{
                 this.products.push({
-                    id: ++this.#id,
-                    title: title,
-                    description: description,
-                    price: price,
-                    thumbnail: thumbnail,
-                    code: code,
-                    stock: stock})
+                    id: this.products.length ? this.products[this.products.length - 1].id + 1: 1,
+                    title: producto.title,
+                    description: producto.description,
+                    price: producto.price,
+                    thumbnail: producto.thumbnail,
+                    code: producto.code,
+                    stock: producto.stock})
             }
         }
             
@@ -137,20 +135,5 @@ class ProductManager{
   
 }
 
-// let productManager = new ProductManager('./products.json')
-
-// productManager.addProdcut("Batman R.I.P.", "chao", 1000)
-// productManager.addProdcut("Batman the killing joke", "chao1", 2000, "x", 157, 300)
-// productManager.addProdcut("Batman Hush", "chao2", 3000, "x", 157, 300)
-// productManager.addProdcut("Batman and son", "chao3", 2500, "x", 159, 300)
-// productManager.addProdcut("The Batman Who Laughs", "chao4", 2500, "x", 158, 300)
-// productManager.getProductBtId(2)
-// productManager.getProductBtId(4)
-// productManager.getProductBtId(5)
-// productManager.getProductBtId(7)
-// productManager.getProductBtId(3)
-// productManager.getProducts()
-// productManager.updateProduct(3, "title", "Hola")
-// productManager.deleteProduct(1)
 
 module.exports = ProductManager
