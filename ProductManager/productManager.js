@@ -1,21 +1,21 @@
 const {promises : fs} = require('fs')
-const { title } = require('process')
 
 class ProductManager{
 
     constructor(path){
         this.products = []
         this.path = path
+        this.estadoPeticion = ""
     }
 
 
     async addProdcut(producto) {
         try { 
-
-        if (!producto.title || !producto.description || !producto.price || !producto.thumbnail || !producto.code || !producto.stock) console.log("llenar todos los campos")
+        this.products = await this.getProducts()
+        if (!producto.title || !producto.description || !producto.price || !producto.code || !producto.stock || !producto.status || !producto.category) this.estadoPeticion = "llenar todos los campos"
         
         else{
-            if(this.products.some(product => product.code == producto.code)) console.log("El codigo de producto ya existe")
+            if(this.products.some(product => product.code == producto.code)) this.estadoPeticion = "El codigo de producto ya existe"
             else{
                 this.products.push({
                     id: this.products.length ? this.products[this.products.length - 1].id + 1: 1,
@@ -24,13 +24,17 @@ class ProductManager{
                     price: producto.price,
                     thumbnail: producto.thumbnail,
                     code: producto.code,
-                    stock: producto.stock})
+                    stock: producto.stock,
+                    status: producto.status,
+                    category: producto.category
+                })
+
+                this.estadoPeticion = "Producto agregado correctamente"
             }
         }
-            
+        
         let productsJson = JSON.stringify(this.products, null, 2)
         await fs.writeFile(this.path, productsJson, 'utf-8')
-        
             
     } catch (error) {
                 console.log(error)
@@ -46,6 +50,7 @@ class ProductManager{
             return fileJS
         } catch (error) {
             console.log(error)
+            return []
         }
         
     }
@@ -59,7 +64,6 @@ class ProductManager{
             arregloJS.map(value2 => {
             const producto = Object.values(value2)
             if(producto[0] == id){
-                // console.log(value2)
                 variable = 1
                 objeto = value2
             }
@@ -81,6 +85,15 @@ class ProductManager{
             let variable = 0
             arregloJS.map(value2 => {
             const producto = Object.values(value2)
+
+            const campos = {
+                numberCampos: ['price', 'code', 'stock', 'category'],
+                stringCampos: ['title', 'description', 'thumbnail'],
+                boolCampos: ['status']
+            }
+
+            const isOfType = (value, type) => typeof value == type
+            
             if(producto[0] == id){
                 // corroboracion de que existe el campo que se desea modificar
                 const keys = Object.keys(value2)
@@ -88,26 +101,18 @@ class ProductManager{
                     console.log("no es posible modificar el campo que se esta solicitando")
                 }
                 else{
-                    // comprobacion de que se esta ingresando un valor numerico a los campos numericos
-                    if ((campoActualizar == "price" || campoActualizar == "code" || campoActualizar == "stock") && (typeof nuevoValorCampo == "number")){
-                        campoActualizar == 'price' ? value2.price = nuevoValorCampo : 0
-                        campoActualizar == 'code' ? value2.code = nuevoValorCampo : 0
-                        campoActualizar == 'stock' ? value2.stock = nuevoValorCampo : 0
-                    }
-                    else{
-                        // corroboracion de que se esta ingresando un valor string a los campos
-                        if(campoActualizar == "title" || campoActualizar == "description" || campoActualizar == "thumbnail" && typeof nuevoValorCampo == "string"){
-                            campoActualizar == "title" ? value2.title = nuevoValorCampo : 0
-                            campoActualizar == 'description' ? value2.description = nuevoValorCampo : 0
-                            campoActualizar == 'thumbnail' ? value2.thumbnail = nuevoValorCampo : 0
-                        }
-                        else{
-                            console.log("error en el tipo del nuevo valor para el campo, no se ha modificado")
-                        }
+                    // corroboracion de tipo
+                    if(campos.numberCampos.includes(campoActualizar) && isOfType(nuevoValorCampo, "number")){
+                        value2[campoActualizar] = nuevoValorCampo
+                    } else if(campos.stringCampos.includes(campoActualizar) && isOfType(nuevoValorCampo, "string")){
+                        value2[campoActualizar] = nuevoValorCampo
+                    } else if(campos.boolCampos.includes(campoActualizar) && isOfType(nuevoValorCampo, "boolean")){
+                        value2[campoActualizar] = nuevoValorCampo
+                    } else{
+                        console.log("Error en el tipo del nuevo valor para el campo, no se ha modificado")
                     }
                  
                 }
-
                 variable = 1
             }
         })
