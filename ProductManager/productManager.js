@@ -55,6 +55,19 @@ class ProductManager{
         
     }
 
+    async getProductsLimited(limit){
+            console.log(limit)
+            let productsLimit = await this.getProducts()
+            let newArrayLimit = []
+            productsLimit.forEach((valor) => {
+              if (valor.id <= limit || !limit) {
+                newArrayLimit.push(valor)
+              }
+            })
+            return newArrayLimit
+    }
+
+
 
     async getProductBtId(id){
         try {

@@ -1,23 +1,5 @@
 [
   {
-    "id": 2,
-    "title": "Hola2",
-    "description": "chao2000",
-    "price": 2500,
-    "thumbnail": "img",
-    "code": 200,
-    "stock": 400
-  },
-  {
-    "id": 3,
-    "title": "Hola3",
-    "description": "chao3000",
-    "price": 2500,
-    "thumbnail": "img",
-    "code": 201,
-    "stock": 400
-  },
-  {
     "id": 4,
     "title": "Hola4",
     "description": "chao3000",
@@ -29,12 +11,12 @@
     "category": "hola"
   },
   {
-    "id": 5,
-    "title": "Hola4",
+    "id": 6,
+    "title": "Hola5",
     "description": "chao3000",
     "price": 2500,
     "thumbnail": "img",
-    "code": 204,
+    "code": 205,
     "stock": 400,
     "status": true,
     "category": "hola"

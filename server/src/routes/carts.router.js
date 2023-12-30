@@ -1,15 +1,8 @@
-const path = require('path')
-const CartManager = require('../../../ProductManager/cartsManager.js')
+const cartManager = require('../instaciasCartsManager.js')
 const express = require('express')
 const bodyParser = require('body-parser')
-const ProductManager = require('../../../ProductManager/productManager.js')
 const router = express.Router()
 
-const cartFilePath = path.resolve(__dirname, '../../data/carts.json')
-const productFilePath = path.resolve(__dirname, '../../data/products.json')
-
-let cartManager = new CartManager(cartFilePath)
-let productManager = new ProductManager(productFilePath)
 
 router.use(bodyParser.urlencoded({extended:true}))
 router.use(bodyParser.json())
@@ -26,7 +19,6 @@ router.post('/carts', async (req,res)=>{
     res.send("finalizado creacion de carrito")
 })
 
-// trabajando en este
 router.post('/carts/:cid/product/:pid', async (req,res)=>{
     const {cid, pid} = req.params
     console.log(cid)

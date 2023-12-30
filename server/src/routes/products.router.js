@@ -1,28 +1,23 @@
-const path = require('path')
-const ProductManager = require('../../../ProductManager/productManager.js')
+const productManager = require('../instanciasProductManager.js')
 const express = require('express')
 const bodyParser = require('body-parser')
+const socket = require('../socket.js')
+
 const router = express.Router()
 
-const productFilePath = path.resolve(__dirname, '../../data/products.json')
-
-let productManager = new ProductManager(productFilePath)
 
 router.use(bodyParser.urlencoded({extended:true}))
 router.use(bodyParser.json())
 
-
 router.get('/products', async (req, res)=>{
     const {limit} = req.query
-    console.log(limit)
-    let products =  await  productManager.getProducts()
-    let newArray = []
-    products.forEach(valor => {
-        if(valor.id <= limit || !limit){
-            newArray.push(valor)
-        }
-    })
-    res.json(newArray)
+    const newArray = await productManager.getProductsLimited(limit)
+    res.render('home', {products : newArray})
+})
+
+router.get('/realtimeproducts', async (req, res)=>{
+    const newArray = await productManager.getProductsLimited()
+    res.render('realTimeProducts', {products : newArray})
 })
 
 router.get('/products/:pid', async (req, res)=>{
@@ -35,6 +30,8 @@ router.post('/products', async (req,res)=>{
     const productoRecibido = req.body
     await productManager.addProdcut(productoRecibido)
     res.send(productManager.estadoPeticion)
+    const arrayProductosActuales = await productManager.getProducts()
+    socket.io.emit('enviarProductos', {dato : arrayProductosActuales})
 })
 
 router.put('/products/:pid', async(req, res)=>{
@@ -60,13 +57,20 @@ router.put('/products/:pid', async(req, res)=>{
     !cambioCategory ? 0 : await productManager.updateProduct(pid, 'category', cambioCategory)
     !cambioThumbnail ? 0 : await productManager.updateProduct(pid, 'thumbnail', cambioThumbnail)
     res.send("campos modificados")
+    const arrayProductosActuales = await productManager.getProducts()
+    socket.io.emit('enviarProductos', {dato : arrayProductosActuales})
 })
 
 router.delete('/products/:pid', async(req, res)=> {
     const {pid} = req.params
-    productManager.deleteProduct(pid)
+    console.log(pid)
+    await productManager.deleteProduct(pid)
     res.send("producto eliminado")
+    const arrayProductosActuales = await productManager.getProducts()
+    console.log(arrayProductosActuales)
+    socket.io.emit('enviarProductos', {dato : arrayProductosActuales})
 })
+
 
 
 module.exports = router
